@@ -1,5 +1,5 @@
 # Danych 
-Danych is a lightweight database in the browser, Danych is built on top of localStorage and sessionStorage.
+Danych a 1kb lightweight database in the browser, Danych is built on top of localStorage and sessionStorage.
 
 ## Installation
 ```bash

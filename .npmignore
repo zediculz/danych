@@ -1,4 +1,6 @@
 
-node_modules
-example
 *.local
+/node_modules
+/npm-debug.log
+/src
+/example

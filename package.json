@@ -13,7 +13,8 @@
   "files": ["dist"],
   "scripts": {
     "build": "microbundle",
-    "dev": "microbundle watch"
+    "dev": "microbundle watch",
+    "b": "microbundle --no-compress --format modern,cjs,umd"
   },
    "devDependencies": {
     "microbundle": "^0.15.1",
