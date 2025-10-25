@@ -1,7 +1,7 @@
 //vanillaDB re-imagined
 export interface DanychConfig {
     key: string
-    type: string
+    type: "s"|"l"|"local"|"session"|"localStorage"|"sessionStorage"
 }
 
 type DefaultData = any[]

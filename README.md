@@ -3,7 +3,7 @@ Danych a 1kb lightweight database in the browser, Danych is built on top of loca
 
 ## Installation
 ```bash
-  npm install --save danychb@latest
+  npm i danych
 ```
 
 ```typescript
@@ -23,8 +23,8 @@ const db = useDanych.init<Todo>({
 //OR, start with just the key
 const db = useDanych.init("my-database-key")
 ```
-### You can init() Danych with full config or just Db Key, as DefaultData is always an Array, treated as a collection of items
-### Danych treats all the datas as collection of items which makes the DefaultData an Array by Default
+### You can init() Danych with either full config object or just Db Key.
+### Danych treats all the datas as collection of items which makes the DefaultData an Array by Default.
 
 ## Usage
 ### Storing Data 
@@ -33,6 +33,9 @@ here is how to store data using Danych
 
 ```typescript
 db.set({ id: 1, text: "some data" })
+
+//set data with id
+db.set({ id: 1, text: "some data" }, 0)
 ```
 
 ### Getting Data
@@ -50,7 +53,7 @@ const datas = db.get(1)
 
 ```typescript
 //update item with id
-db.update({ id: 64, text: "new data value" })
+db.update({ id: 64, text: "new data value" }, 1)
 ```
 
 ### Removing Data
