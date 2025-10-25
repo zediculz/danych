@@ -5,10 +5,11 @@ interface Todo {
   text: string
 }
 
-const db = useDanych.config<Todo>({
+const db = useDanych.init<Todo>({
   key: "app-data",
   type: "session"
 })
+
 
 //db.set({ id: 1, text: "some data" })
 

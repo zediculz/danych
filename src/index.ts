@@ -2,34 +2,36 @@
 export interface DanychConfig {
     key: string
     type: string
-    version?: string,
 }
 
 type DefaultData = any[]
 const dConfig: DanychConfig = {
     key: "my-app-data",
     type: "local",
-    version: "0"
 }
 
 /**@class DanychMech Danych Machine */
-class DanychMech {
+class DanychMachine {
+    /**@method init Danych Entry Point @param arg string @param arg DanychConfig */
+    init<T>(arg: string | DanychConfig) {
+        const type = typeof arg
 
-    /**@method init starts DB with only key @param key */
-    init<T>(key: string) {
-        const nCfg:DanychConfig = { ...dConfig, key }
-        return new Danych<T>(nCfg)
-    }
+        if (type === "string") {
+            const key = arg as string
+            const nCfg: DanychConfig = { ...dConfig, key }
+            return new Danych<T>(nCfg)
 
-    /**@method config starts DB with config @param cfg */
-    config<T>(config: DanychConfig) {
-        const cfg: DanychConfig = {
-            key: config.key === undefined ? dConfig.key : config.key,
-            type: config.type === undefined ? dConfig.type : config.type,
-            version: config.version === undefined ? dConfig.version : config.version,
+        } else if (type === "object") {
+            const config = arg as DanychConfig
+            const cfg: DanychConfig = {
+                key: config.key === undefined ? dConfig.key : config.key,
+                type: config.type === undefined ? dConfig.type : config.type,
+            }
+
+            return new Danych<T>(cfg)
         }
 
-        return new Danych<T>(config)
+        return new Danych<T>(dConfig)
     }
 }
 
@@ -41,7 +43,7 @@ function isLocal(str: string) {
     return false
 }
 
-function isSession (str: string) {
+function isSession(str: string) {
     if (str === "session" || str === "s" || str === "sessionStorage") {
         return true
     }
@@ -50,7 +52,7 @@ function isSession (str: string) {
 }
 
 /**@class Danych state machine. */
-class Danych<T = DefaultData> { 
+class Danych<T = DefaultData> {
     private config: DanychConfig
     items: T[]
     constructor(config: DanychConfig) {
@@ -80,33 +82,24 @@ class Danych<T = DefaultData> {
     }
 
     /**@method update item in items with id @param id */
-    update(data:T, id:number) {
+    update(data: T, id: number) {
         const selected = this.items[id]
 
         if (selected !== undefined) {
             const others = this.items.filter((_, itemId) => itemId !== id)
-            this.items = others 
+            this.items = others
             this.set(data, id)
         }
     }
 
     /**@method remove item in items with id @param id */
-    remove(id:number) {
+    remove(id: number) {
         const selected = this.items[id]
 
         if (selected !== undefined) {
             const others = this.items.filter((_, itemId) => itemId !== id)
-            this.items = others 
+            this.items = others
             this.#sync()
-        }
-    }
-
-    /**@method clear */
-    clear() {
-        if (isLocal(this.config.type)) {
-            localStorage.clear()
-        } else if (isSession(this.config.type)) {
-            sessionStorage.clear()
         }
     }
 
@@ -116,7 +109,6 @@ class Danych<T = DefaultData> {
             if (exist === null) {
                 const nd = {
                     key: this.config.key,
-                    version: this.config.version,
                     data: [],
                 }
                 localStorage.setItem(this.config.key, JSON.stringify(nd))
@@ -126,7 +118,6 @@ class Danych<T = DefaultData> {
             if (exist === null) {
                 const nd = {
                     key: this.config.key,
-                    version: this.config.version,
                     data: [],
                 }
                 sessionStorage.setItem(this.config.key, JSON.stringify(nd))
@@ -160,5 +151,5 @@ class Danych<T = DefaultData> {
 }
 
 /**@instance useDanych is Danych Entry Point */
-const useDanych = new DanychMech()
+const useDanych = new DanychMachine()
 export default useDanych

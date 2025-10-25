@@ -14,8 +14,8 @@ interface Todo {
   text: string
 }
 
-//Start with full config
-const db = useDanych.config<Todo>({
+//Starting with full config
+const db = useDanych.init<Todo>({
   key: "my-app-data",
   type: "session"
 })
@@ -23,6 +23,8 @@ const db = useDanych.config<Todo>({
 //OR, start with just the key
 const db = useDanych.init("my-database-key")
 ```
+### You can init() Danych with full config or just Db Key, as DefaultData is always an Array, treated as a collection of items
+### Danych treats all the datas as collection of items which makes the DefaultData an Array by Default
 
 ## Usage
 ### Storing Data 
@@ -33,7 +35,7 @@ here is how to store data using Danych
 db.set({ id: 1, text: "some data" })
 ```
 
-### Getting Data 
+### Getting Data
 
 you can get the last stored data or get data with id
 ```typescript
@@ -58,9 +60,7 @@ db.update({ id: 64, text: "new data value" })
 db.remove(0)
 ```
 
-## More Features
-
-- clear() - clear all keys and data
+## Properties
 - items - return all store datas.
 
 
