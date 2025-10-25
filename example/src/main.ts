@@ -11,8 +11,10 @@ const db = useDanych.config<Todo>({
 })
 
 //db.set({ id: 1, text: "some data" })
+
 const datas = db.get()
 //console.log(datas)
+
 //db.update({ id: 64, text: "PIG_WAR" }, 0)
 //db.remove(0)
 

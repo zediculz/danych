@@ -1,133 +1,74 @@
-# VanillaDb
-
-VanillaDb is a lightweight browser database library thats built on top of localStorage and sessionStorage.
+# Danych 
+Danych is a lightweight database in the browser, Danych is built on top of localStorage and sessionStorage.
 
 ## Installation
 ```bash
-  npm install --save vanilla-db@latest
-```
-Once the package is installed, you can import the library using import vanillaDb
-
-```javascript
-import { vanillaDb } from 'vanilla-db'
+  npm install --save danychb@latest
 ```
 
-## Documentation
+```typescript
+import useDanych from "danych"
+
+interface Todo {
+  id: number
+  text: string
+}
+
+//Start with full config
+const db = useDanych.config<Todo>({
+  key: "my-app-data",
+  type: "session"
+})
+
+//OR, start with just the key
+const db = useDanych.init("my-database-key")
+```
+
+## Usage
 ### Storing Data 
 
-to store data using vanillaDb
+here is how to store data using Danych
 
-```javascript
-const config = {
-  db: 'local', // or 'session', 'localStorage', 'sessionStorage',
-  key: 'my-database-key' ,
-  data: {
-    name: 'John Doe',
-    age: 40,
-    role: 'React Developer'
-  }
-}
-
-vanillaDb.set(config)
+```typescript
+db.set({ id: 1, text: "some data" })
 ```
-to Get stored data, call the set() method and pass an object with
-key: Database key,
-db:  which can either be "local || localStorage" or "session || sessionStorage" ,
-data: the data you are storing (which can be arrays, object, or just a variable or state).
-
-
 
 ### Getting Data 
-VanillaDb uses key-value pair method in storing datas, you will be able to get the stored data by referencing its database key.
 
-```javascript
-const query = {
-  db: 'local', // or 'session', 'localStorage', 'sessionStorage',
-  key: 'my-database-key',
-  option: 'all' || 'only'
-}
+you can get the last stored data or get data with id
+```typescript
+//get the last store item
+const datas = db.get()
 
-vanillaDb.get(query)
-```
-to Get stored data, call the get() method and pass an object with
-db: the database data is stored
-key: database key.
-option: to either return all the Database or only the data stored.
-
-
-### Sync Data
-sync(copy) allow you to copy or move data within sessionStorage and localStorage, 
-
-```javascript
-const config = {
-  from: 'local', 
-  to: 'session',
-  key: 'my-data' ,
-  options: {
-      deleteOld: true // or false,
-      newKey: 'my-synced-data'
-  }
-}
-
-vanillaDb.sync(config)
+//get item with id
+const datas = db.get(1)
 ```
 
-to use sync(copy) create an object with
+### Updating Data
 
-from: the database you can are copying/syncing data from, 
-to: the new database you are copying/syncing to
-key: the key of the database you want to copy/sync.
+```typescript
+//update item with id
+db.update({ id: 64, text: "new data value" })
+```
 
-options contains 
-deleteOld: which can either be true or false to delete old stored data
-newKey: for the new data synced.
+### Removing Data
+
+```typescript
+//remove item with id
+db.remove(0)
+```
 
 ## More Features
-- remove(db) - remove the data stored in Database
-- length(db) - return the length of data stored in Database
-- request(db) - fetch data from api (mostly get) and store the data in database for offline usage.
 
-### Usage/Examples
-```javascript
-const query = {
-  db: 'local' // 'session',
-  key: 'your database key',
-}
-
-vanillaDb.remove(query)
-
-```
-query contains the database you stored your data and the key of the database you want to remove.
-
-```javascript
-const db =  'local' // 'session',
-
-vanillaDb.length(db)
-```
-db is the Database you stored data or the Database you which to know its length.
-
-```javascript
-import { vanillaDb } from 'vanilla-db'
-
-const config =  {
-    url: 'api endpoint',
-    db: 'local' // 'session',
-    key: 'database key',
-    options: {'fetch request options'}
-}
-
-vanillaDb.request(config)
-
-```
-db is the Database you stored data.
+- clear() - clear all keys and data
+- items - return all store datas.
 
 
-[![NPM](https://img.shields.io/npm/v/vanilla-db.svg)](https://www.npmjs.com/package/vanilla-db) 
+[![NPM](https://img.shields.io/npm/v/danych.svg)](https://www.npmjs.com/package/danych) 
 
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 [![Contact](https://img.shields.io/badge/contact-@zediculz-blue.svg?style=flat&logo=twitter)](https://twitter.com/zediculz)
 
 ## License
-
 MIT ©
