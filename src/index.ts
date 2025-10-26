@@ -51,7 +51,7 @@ function isSession(str: string) {
     return false
 }
 
-/**@class Danych state machine. */
+/**@class Danych DB. */
 class Danych<T = DefaultData> {
     private config: DanychConfig
     items: T[]
