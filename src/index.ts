@@ -1,16 +1,15 @@
 //vanillaDB re-imagined
 export interface DanychConfig {
     key: string
-    type: "s"|"l"|"local"|"session"|"localStorage"|"sessionStorage"
+    type: "s" | "l" | "local" | "session" | "localStorage" | "sessionStorage"
 }
 
-type DefaultData = any[]
 const dConfig: DanychConfig = {
     key: "my-app-data",
     type: "local",
 }
 
-/**@class DanychMech Danych Machine */
+/**@class DanychMachine. */
 class DanychMachine {
     /**@method init Danych Entry Point @param arg string @param arg DanychConfig */
     init<T>(arg: string | DanychConfig) {
@@ -23,6 +22,7 @@ class DanychMachine {
 
         } else if (type === "object") {
             const config = arg as DanychConfig
+
             const cfg: DanychConfig = {
                 key: config.key === undefined ? dConfig.key : config.key,
                 type: config.type === undefined ? dConfig.type : config.type,
@@ -33,26 +33,27 @@ class DanychMachine {
 
         return new Danych<T>(dConfig)
     }
-}
 
-function isLocal(str: string) {
-    if (str === "local" || str === "l" || str === "localStorage") {
-        return true
+    static isLocal(str: string) {
+        if (str === "local" || str === "l" || str === "localStorage") {
+            return true
+        }
+
+        return false
     }
 
-    return false
-}
+    static isSession(str: string) {
+        if (str === "session" || str === "s" || str === "sessionStorage") {
+            return true
+        }
 
-function isSession(str: string) {
-    if (str === "session" || str === "s" || str === "sessionStorage") {
-        return true
+        return false
     }
-
-    return false
 }
+
 
 /**@class Danych DB. */
-class Danych<T = DefaultData> {
+class Danych<T = any[]> {
     private config: DanychConfig
     items: T[]
     constructor(config: DanychConfig) {
@@ -61,7 +62,7 @@ class Danych<T = DefaultData> {
         this.#init()
     }
 
-    /**@method set add new data to the items */
+    /**@method set add new data to the items. @param id add new data at specified id in the items colection.  @example db.set(data) or db.set(data, 0). */
     set(data: T, id?: number) {
         if (id === undefined) {
             this.items.push(data)
@@ -72,16 +73,16 @@ class Danych<T = DefaultData> {
         }
     }
 
-    /**@method get return the last data in the items @param id return the item with the id */
+    /**@method get returns all items or the item with the id. @param id item id. @example db.get() or db.get(0) which returns all datas collection as db.items.*/
     get(id?: number) {
         if (id === undefined) {
-            return this.items[this.items.length - 1]
+            return this.items
         } else {
             return this.items[id]
         }
     }
 
-    /**@method update item in items with id @param id */
+    /**@method update item with id. @param id item id. @example db.update(newdata) or db.update(newdata, 0). */
     update(data: T, id: number) {
         const selected = this.items[id]
 
@@ -92,64 +93,64 @@ class Danych<T = DefaultData> {
         }
     }
 
-    /**@method remove item in items with id @param id */
-    remove(id: number) {
+    /**@method remove item with id. @param id item id. @example db.remove(0). */
+    remove(id?: number) {
         const selected = this.items[id]
 
         if (selected !== undefined) {
             const others = this.items.filter((_, itemId) => itemId !== id)
             this.items = others
             this.#sync()
+        } else {
+            this.items.pop()
+            this.#sync()
         }
     }
 
     #init() {
-        if (isLocal(this.config.type)) {
-            const exist = localStorage.getItem(this.config.key)
+        const nd = JSON.stringify({ length: 0, items: [], })
+        const type = this.config.type
+        const key = this.config.key
+
+        if (DanychMachine.isLocal(type)) {
+            const exist = localStorage.getItem(key)
             if (exist === null) {
-                const nd = {
-                    key: this.config.key,
-                    data: [],
-                }
-                localStorage.setItem(this.config.key, JSON.stringify(nd))
+                localStorage.setItem(key, nd)
             }
-        } else if (isSession(this.config.type)) {
-            const exist = sessionStorage.getItem(this.config.key)
+        } else if (DanychMachine.isSession(type)) {
+            const exist = sessionStorage.getItem(key)
             if (exist === null) {
-                const nd = {
-                    key: this.config.key,
-                    data: [],
-                }
-                sessionStorage.setItem(this.config.key, JSON.stringify(nd))
+                sessionStorage.setItem(key, nd)
             }
         }
     }
 
     #sync() {
-        const d = { ...this.config, items: this.items }
+        const d = { items: this.items, length: this.items.length }
         const data = JSON.stringify(d)
         const key = this.config.key
 
-        if (isSession(this.config.type)) {
+        if (DanychMachine.isSession(this.config.type)) {
             sessionStorage.setItem(key, data)
-        } else if (isLocal(this.config.type)) {
+        } else if (DanychMachine.isLocal(this.config.type)) {
             localStorage.setItem(key, data)
         }
     }
 
     #loadItems() {
         const key = this.config.key
+        const type = this.config.type
         const session = sessionStorage.getItem(key)
         const local = localStorage.getItem(key)
 
-        if (isSession(this.config.type)) {
+        if (DanychMachine.isSession(type)) {
             return JSON.parse(session)
-        } else if (isLocal(this.config.type)) {
+        } else if (DanychMachine.isLocal(type)) {
             return JSON.parse(local)
         }
     }
 }
 
-/**@instance useDanych is Danych Entry Point */
+/**@hook useDanych is Danych entry point. Danych is a 1kb lightweight database in the browser built on top of localStorage and sessionStorage. @example call useDanych.init(), const db = useDanych.init<YourDBType> and use the return db to get db.get(), db.get(0), set db.set(data), db.set(data, id), update db.update(newdata), db.update(newdata, id), and remove db.remove(id). */
 const useDanych = new DanychMachine()
 export default useDanych

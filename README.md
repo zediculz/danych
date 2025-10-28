@@ -23,13 +23,13 @@ const db = useDanych.init<Todo>({
 //OR, start with just the key
 const db = useDanych.init("my-database-key")
 ```
-### You can init() Danych with either full config object or just Db Key.
+### You can call init() Danych with either full config object or just Db Key.
 ### Danych treats all the datas as collection of items which makes the DefaultData an Array by Default.
 
 ## Usage
 ### Storing Data 
 
-here is how to store data using Danych
+here is how to store new data using Danych.
 
 ```typescript
 db.set({ id: 1, text: "some data" })
@@ -40,27 +40,30 @@ db.set({ id: 1, text: "some data" }, 0)
 
 ### Getting Data
 
-you can get the last stored data or get data with id
+you can get all the datas or get data with id.
 ```typescript
-//get the last store item
+//get all the store datas
 const datas = db.get()
 
-//get item with id
+//get data with id
 const datas = db.get(1)
 ```
 
 ### Updating Data
 
 ```typescript
-//update item with id
+//update data with id
 db.update({ id: 64, text: "new data value" }, 1)
 ```
 
 ### Removing Data
 
 ```typescript
-//remove item with id
+//remove data with id
 db.remove(0)
+
+//remove last stored data
+db.remove()
 ```
 
 ## Properties
