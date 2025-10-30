@@ -52,7 +52,7 @@ class DanychMachine {
 }
 
 /**@class Danych is a 1kb lightweight database in the browser built on top of localStorage and sessionStorage. @param config.  @example const db = new Danych<DbType>({config}) and use the return db to get db.get(), db.get(0), set db.set(data), db.set(data, id), update db.update(newdata), db.update(newdata, id), and remove db.remove(id).. */
-export class Danych<T = any[]> {
+class Danych<T = any[]> {
     private config: DanychConfig
     items: T[]
     constructor(config: DanychConfig) {
@@ -150,6 +150,6 @@ export class Danych<T = any[]> {
     }
 }
 
-/**@hook useDanych Danych is a 1kb lightweight database in the browser built on top of localStorage and sessionStorage. @example call useDanych.init(), const db = useDanych.init<YourDBType> and use the return db to get db.get(), db.get(0), set db.set(data), db.set(data, id), update db.update(newdata), db.update(newdata, id), and remove db.remove(id). */
+/**@danych useDanych Danych is a 1kb lightweight database in the browser built on top of localStorage and sessionStorage. @example call useDanych.init(), const db = useDanych.init<YourDBType> and use the return db to get db.get(), db.get(0), set db.set(data), db.set(data, id), update db.update(newdata), db.update(newdata, id), and remove db.remove(id). */
 const useDanych = new DanychMachine()
 export default useDanych
