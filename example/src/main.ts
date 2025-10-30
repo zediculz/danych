@@ -1,4 +1,4 @@
-import useDanych from "../../src/index"
+import useDanych, {Danych} from "../../src/index"
 
 interface Todo {
   id: number
@@ -13,10 +13,15 @@ const db = useDanych.init<Todo>({
 
 //db.set({ id: 1, text: "some data" })
 
-const datas = db.get(0)
+const datas = db.get()
 console.log(datas)
 
 //db.update({ id: 64, text: "PIG_WAR" }, 0)
 //db.remove(0)
 
-console.log(db)
+const d = new Danych<Todo>({
+  key: "hjhjhjh",
+  type: "local"
+})
+
+console.log(d)

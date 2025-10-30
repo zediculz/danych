@@ -1,6 +1,6 @@
 {
   "name": "danych",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "a 1kb lightweight database in the browser built on top of localStorage and sessionStorage.",
   "source": "src/index.ts",
   "main": "dist/index.umd.js",
