@@ -75,7 +75,7 @@ class Danych<T> {
         this.datas = this.#init()?.datas === undefined ? [] : this.#init()?.datas
     }
 
-    /**@method set add new data. @param id add new data at specified id.  @example db.set(data) or db.set(data, id) */
+    /**@method set add new data. @param data @param id add new data at specified id. @example db.set(data) or db.set(data, id) */
     set(data: T, id?: number) {
         if (id === undefined) {
             this.datas.push(data)
@@ -88,30 +88,22 @@ class Danych<T> {
 
     /**@method get return all datas or the data with id. @param id data id. @example db.get(0) or db.get().*/
     get(id?: number) {
-        if (id === undefined) {
-            return this.datas
-        } else {
-            return this.datas[id]
-        }
+        const datas = id === undefined ? this.datas : this.datas[id]
+        return datas
     }
 
     /**@method update data with id. @param data new data. @param id data id. @example db.update(newdata) or db.update(newdata, 0). */
     update(data: T, id: number) {
-        const selected = this.datas[id]
-
-        if (selected !== undefined) {
-            const others = this.datas.filter((_, itemId) => itemId !== id)
-            this.datas = others
+        if (this.datas[id] !== undefined) {
+            this.datas = this.datas.filter((_, i) => i !== id)
             this.set(data, id)
         }
     }
 
     /**@method remove data with id. @param id data id. @example db.remove(0), db.remove().  */
     remove(id?: number) {
-        const selected = this.datas[id]
-
-        if (selected !== undefined) {
-            const others = this.datas.filter((_, itemId) => itemId !== id)
+        if (this.datas[id] !== undefined) {
+            const others = this.datas.filter((_, i) => i !== id)
             this.datas = others
             this.#sync()
         } else {
@@ -123,7 +115,6 @@ class Danych<T> {
     #init():DanychData {
         const data:DanychData = { size: 0, datas: [] }
         const nd = JSON.stringify(data)
-
         const type = this.config.type
         const key = this.config.key
 
@@ -158,8 +149,6 @@ class Danych<T> {
         }
     }
 }
-
-//query -- fetch data with fetch, return data using local first principle
 
 /**@danych useDanych Danych lightweight browser storage. @example call useDanych.init(), const db = useDanych.init<YourDBType>(config object or dbkey), call useDanych.start<DbType>(db-key) to start a sessionStorage Db, call useDanych.db<DbType>(db-key) to start a localStorage Db and use the return db to get db.get(), db.get(0), set db.set(data), db.set(data, id), update db.update(newdata), db.update(newdata, id), and remove db.remove(id). */
 const useDanych = new DanychStore()
