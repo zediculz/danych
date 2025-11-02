@@ -27,7 +27,7 @@ const db = useDanych.db("my-database-key")
 //OR, start sessionStorage with just the key
 const db = useDanych.state("my-database-key")
 ```
-### call init() to start Danych with either full config object or just Db Key.
+### call init() to start Danych with either full config object.
 ### call db() to start Danych with localStorage with just Db Key.
 ### call state() to start Danych with sessionStorage with just Db Key.
 
