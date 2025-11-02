@@ -7,7 +7,7 @@ Danych a 1kb lightweight database in the browser, Danych is built on top of loca
 ```
 
 ```typescript
-import useDanych from "danych"
+import { useDanych } from "danych"
 
 interface Todo {
   id: number
