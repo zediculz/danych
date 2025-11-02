@@ -1,7 +1,7 @@
 //vanillaDB re-imagined
 export interface DanychConfig {
     key: string
-    type: "s" | "l" | "local" | "session" | "localStorage" | "sessionStorage"
+    type?: "s" | "l" | "local" | "session" | "localStorage" | "sessionStorage"
 }
 
 interface DanychData { size: number, datas: [] }
@@ -13,55 +13,34 @@ const dConfig: DanychConfig = {
 
 /**@class DanychMachine. */
 class DanychStore {
-    /**@method init Danych Entry Point @param arg string @param arg DanychConfig */
-    init<T>(arg: string | DanychConfig) {
-        const type = typeof arg
-
-        if (type === "string") {
-            const key = arg as string
-            const nCfg: DanychConfig = { ...dConfig, key }
-            return new Danych<T>(nCfg)
-
-        } else if (type === "object") {
-            const config = arg as DanychConfig
-
-            const cfg: DanychConfig = {
-                key: config.key === undefined ? dConfig.key : config.key,
-                type: config.type === undefined ? dConfig.type : config.type,
-            }
-
-            return new Danych<T>(cfg)
-        }
-
-        return new Danych<T>(dConfig)
+    /**@method init Danych entry point. @param arg Danych config object. */
+    init<T>(config: DanychConfig) {
+        return new Danych<T>({
+            key: config.key,
+            type: config.type === undefined ? dConfig.type : config.type
+        })
     }
 
-    /**@method db Starts Danych with localStorage with Db Key @param key string. */
+    /**@method db starts Danych with localStorage and db key @param key database key. */
     db<T>(key: string) { 
-        const config:DanychConfig = {type: "local", key }
-        return new Danych<T>(config)
+        return new Danych<T>({ type: "local", key })
     }
 
-    /**@method state Starts Danych with sessionStorage with Db Key @param key string. */
+    /**@method state starts Danych with sessionStorage and db key @param key database key. */
     state<T>(key: string) {
-        const config:DanychConfig = {type: "session", key }
-        return new Danych<T>(config)
+        return new Danych<T>({ type: "session", key })
     }
 
     static isLocal(str: string) {
         if (str === "local" || str === "l" || str === "localStorage") {
             return true
-        }
-
-        return false
+        } else { return false }
     }
 
     static isSession(str: string) {
         if (str === "session" || str === "s" || str === "sessionStorage") {
             return true
-        }
-
-        return false
+        } else { return false }
     }
 }
 
@@ -141,10 +120,11 @@ class Danych<T> {
         const d = { datas: this.datas, size: this.datas.length }
         const data = JSON.stringify(d)
         const key = this.config.key
+        const type = this.config.type
 
-        if (DanychStore.isSession(this.config.type)) {
+        if (DanychStore.isSession(type)) {
             sessionStorage.setItem(key, data)
-        } else if (DanychStore.isLocal(this.config.type)) {
+        } else if (DanychStore.isLocal(type)) {
             localStorage.setItem(key, data)
         }
     }

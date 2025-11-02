@@ -5,9 +5,8 @@ interface Todo {
   id: number
   text: string
 }
-
 const db = useDanych.db<Todo>("app-data")
-//db.set({ id: 1, text: "some data" })
+//db.set({ id: 12, text: "some data" })
 
 const datas = db.get()
 console.log(datas)
