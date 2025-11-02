@@ -77,6 +77,7 @@ db.remove()
 ## Properties
 - datas - return all store datas.
 
+###Danych is 750 Bytes, Fast, Fully Typed and Lightweight 🚀💨
 
 [![NPM](https://img.shields.io/npm/v/danych.svg)](https://www.npmjs.com/package/danych) 
 
