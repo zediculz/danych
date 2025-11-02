@@ -1,5 +1,6 @@
 # Danych 
-Danych a 1kb lightweight database in the browser, Danych is built on top of localStorage and sessionStorage.
+Danych is a 1kb lightweight database in the browser.
+Danych is simply a Browser Storage built on top of localStorage and sessionStorage.
 
 ## Installation
 ```bash
@@ -7,7 +8,7 @@ Danych a 1kb lightweight database in the browser, Danych is built on top of loca
 ```
 
 ```typescript
-import { useDanych } from "danych"
+import useDanych from "danych"
 
 interface Todo {
   id: number
@@ -20,18 +21,25 @@ const db = useDanych.init<Todo>({
   type: "session"
 })
 
-//OR, start with just the key
-const db = useDanych.init("my-database-key")
+//OR, start localStorage with just the key
+const db = useDanych.db("my-database-key")
+
+//OR, start sessionStorage with just the key
+const db = useDanych.state("my-database-key")
 ```
-### You can call init() Danych with either full config object or just Db Key.
-### Danych treats all the datas as collection of items which makes the DefaultData an Array by Default.
+### call init() to start Danych with either full config object or just Db Key.
+### call db() to start Danych with localStorage with just Db Key.
+### call state() to start Danych with sessionStorage with just Db Key.
+
+#### Danych treats all the datas like a collection which makes the DefaultData an Array by Default.
 
 ## Usage
 ### Storing Data 
 
-here is how to store new data using Danych.
+store new data using Danych.
 
 ```typescript
+//set new data
 db.set({ id: 1, text: "some data" })
 
 //set data with id
@@ -40,7 +48,7 @@ db.set({ id: 1, text: "some data" }, 0)
 
 ### Getting Data
 
-you can get all the datas or get data with id.
+get all the datas or get data with id.
 ```typescript
 //get all the store datas
 const datas = db.get()
@@ -67,7 +75,7 @@ db.remove()
 ```
 
 ## Properties
-- items - return all store datas.
+- datas - return all store datas.
 
 
 [![NPM](https://img.shields.io/npm/v/danych.svg)](https://www.npmjs.com/package/danych) 

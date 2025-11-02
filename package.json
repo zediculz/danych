@@ -1,6 +1,6 @@
 {
   "name": "danych",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "a 1kb lightweight database in the browser built on top of localStorage and sessionStorage.",
   "source": "src/index.ts",
   "main": "dist/index.umd.js",
@@ -22,5 +22,6 @@
   },
   "keywords": ["localStorage", "sessionStorage", "browser-storage", "local first"],
   "author": "Zediculz",
+  "git": "",
   "license": "MIT"
 }
